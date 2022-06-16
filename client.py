@@ -64,6 +64,9 @@ while connected:
 	elif input_string == 'Average':
 		send_msg('Average')
 	elif input_string == 'Sort':
-		send_msg('Average')
-
+		send_msg('Sort')
+	elif input_string == 'Max':
+		send_msg('Max')
+	elif input_string == 'Min':
+		send_msg('Min')
 	#send_msg(input_string)

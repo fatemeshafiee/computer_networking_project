@@ -29,7 +29,7 @@ def save_student_info(conn, addr):
 				outfile.write(msg)
 			conn.send("informations saved.".encode('utf-8'))
 			return json.loads(msg)
-def students_avg(informations):
+def students_avg(informations, conn):
 	ave = {}
 	for i in range(NUM_STU):
 
@@ -38,7 +38,7 @@ def students_avg(informations):
 	conn.send(ave.encode('utf-8'))
 
 
-def sort_avg(informations):
+def sort_avg(informations, conn):
 	sorted_avg = {}
 	for i in range(NUM_STU):
 
@@ -47,10 +47,32 @@ def sort_avg(informations):
 		sorted_avg = json.dumps(sorted_avg)
 
 	conn.send(sorted_avg.encode('utf-8'))
-def Max_avg(informations):
+def Max_avg(informations, conn):
+	sorted_avg = {}
+	for i in range(NUM_STU):
+
+		sorted_avg[str(i)] = sum(informations[str(i)]['marks']) / 5
+		sorted_avg = sorted(sorted_avg.items(), key = lambda kv: kv[1])
+		
+		last = sorted_avg[NUM_STU-1][0]
+		print(last)
+		result={'name':informations[last]['name'], 'last_name': informations[last]['last_name'], 'avg': sorted_avg[NUM_STU-1][1]}
+		result = json.dumps(result)
+	conn.send(result.encode('utf-8'))
 
 
-def Min_avg(informations):
+def Min_avg(informations, conn):
+	sorted_avg = {}
+	for i in range(NUM_STU):
+
+		sorted_avg[str(i)] = sum(informations[str(i)]['marks']) / 5
+		sorted_avg = sorted(sorted_avg.items(), key = lambda kv: kv[1])
+		first = sorted_avg[0][0]
+
+		result={'name':informations[first]['name'], 'last_name': informations[first]['last_name'], 'avg': sorted_avg[0][1]}
+		result = json.dumps(result)
+	conn.send(result.encode('utf-8'))
+
 
 def handle_client(conn, addr):
 
@@ -72,20 +94,20 @@ def handle_client(conn, addr):
 	
 			elif msg == 'Average':
 
-				students_avg(informations)
+				students_avg(informations, conn)
 
 			elif msg=='Sort':
 
-				sort_avg(informations)
+				sort_avg(informations, conn)
 
 			elif msg=="Max":
 
-				Max_avg(informations)
+				Max_avg(informations, conn)
 
 			elif msg=="Min":
 				
-				Min_avg(informations)
-				
+				Min_avg(informations, conn)
+
 			else:
 				connected = False
 				conn.send("!Disconnected".encode('utf-8'))
