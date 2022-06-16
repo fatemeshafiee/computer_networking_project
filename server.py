@@ -1,9 +1,10 @@
 import socket
 import threading
 import json
+import os
 
 Header = 64
-NUM_STU = 1
+NUM_STU = 5
 PORT = 4500
 DISCONNECT_MSG = "!Disconnected"
 STUDENT_INFO="Student information"
@@ -25,14 +26,15 @@ def save_student_info(conn, addr):
 			msg = conn.recv(msg_legnth).decode('utf-8')
 			print(msg)
 			connected = False
-			with open('json_data'+str(addr)+'.json', 'w') as outfile:
+			with open('json_data_client'+str(addr)+'.json', 'w') as outfile:
 				outfile.write(msg)
 			conn.send("informations saved.".encode('utf-8'))
-			return json.loads(msg)
+			info = json.loads(msg)
+			NUM_STU = len(info)
+			return info
 def students_avg(informations, conn):
-	ave = {}
+	ave = dict()
 	for i in range(NUM_STU):
-
 		ave[informations[str(i)]['national code']] = sum(informations[str(i)]['marks']) / 5
 		ave = json.dumps(ave)
 	conn.send(ave.encode('utf-8'))
@@ -105,7 +107,7 @@ def handle_client(conn, addr):
 				Max_avg(informations, conn)
 
 			elif msg=="Min":
-				
+			
 				Min_avg(informations, conn)
 
 			else:
@@ -125,7 +127,11 @@ def handle_client(conn, addr):
 def start_server():
 
 	server.listen()
-	while True :
+	dept_num = int(input("Enter number of departments: "))
+
+		
+	for i in range(dept_num):
+		os.system("start /B start cmd.exe @cmd /c python client.py")
 		conn, addr = server.accept()
 		thread = threading.Thread(target=handle_client, args=(conn, addr))
 		thread.start()
@@ -133,3 +139,5 @@ def start_server():
 
 print("[SERVER IS STARTING...]")
 start_server()
+
+

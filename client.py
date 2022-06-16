@@ -43,9 +43,11 @@ def get_student_info():
 	return information
 
 def send_students_info():
+	print("Enter the number of students:")
+	s_num = int(input())
 	informations = {}
-	#for i in range(1,6):
-	for i in range(1):
+
+	for i in range(s_num):
 		print("Enter the Student " + str(i)+" information:")
 		informations[str(i)] = get_student_info()
 	informations = json.dumps(informations)
