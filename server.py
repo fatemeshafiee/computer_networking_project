@@ -26,6 +26,7 @@ def handle_client(conn, addr):
 
 			if msg == DISCONNECT_MSG:
 				connected = False
+			conn.send("ACK".encode('utf-8'))
 				
 	conn.close()
 	print(f"[{addr} Connection Closed. ACTIVE CONNECTIONS]   {threading. active_count() - 2}")
@@ -43,5 +44,5 @@ def start_server():
 		thread.start()
 		print(f"[ACTIVE CONNECTIONS]   {threading. active_count() - 1}")
 
-print("SERVER IS STARTING...")
+print("[SERVER IS STARTING...]")
 start_server()

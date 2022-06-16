@@ -14,6 +14,7 @@ def send_msg(msg):
 	send_legnth += b' ' * (64 - len(send_legnth))
 	client.send(send_legnth)
 	client.send(message )
+	print(client.recv(2048).decode('utf-8'))
 
 connected = True
 while connected:
