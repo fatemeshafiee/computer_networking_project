@@ -3,7 +3,6 @@ import threading
 import json
 import os
 Header = 64
-NUM_STU = 1
 PORT = 4500
 DISCONNECT_MSG = "!Disconnected"
 STUDENT_INFO="Student information"
