@@ -4,7 +4,7 @@ import json
 
 DISCONNECT_MSG = "!Disconnected"
 STUDENT_INFO="Student information"
-SERVER = "192.168.1.6"
+SERVER = "192.168.196.224"
 PORT = 4500
 
 
